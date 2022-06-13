@@ -30,7 +30,7 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#Datacom">API Improvemtns to Datacom</a></li>
+    <li><a href="#Datacom">API Improvements to Datacom</a></li>
   </ol>
 </details>
 
