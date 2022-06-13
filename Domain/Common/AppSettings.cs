@@ -1,12 +1,12 @@
 ﻿
 namespace Domain.Common
 {
-    public class AppSettings
+    public record AppSettings
     {
         public API API { get; set; }
     }
 
-    public class API
+    public record API
     {
         public string AuthUrl { get; set; }
         public string ClientId { get; set; }

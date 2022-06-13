@@ -2,9 +2,10 @@
 global using Domain.Common;
 global using Domain.Exceptions;
 global using Infrastructure.Filters;
-global using Infrastructure.Services;
-global using Infrastructure.Services.DTo;
 global using Infrastructure.Handler;
+global using Application.Services;
+global using Application.Interfaces;
+global using Application;
 
 global using System.Net;
 

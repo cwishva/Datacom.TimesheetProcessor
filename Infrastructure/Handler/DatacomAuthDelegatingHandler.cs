@@ -1,13 +1,14 @@
 ﻿
+
 namespace Infrastructure.Handler
 {
-    public class DatacomAuthorizationDelegatingHandler 
+    public class DatacomAuthDelegatingHandler 
         : DelegatingHandler
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly AppSettings _appSettings;
 
-        public DatacomAuthorizationDelegatingHandler(
+        public DatacomAuthDelegatingHandler(
             IHttpClientFactory httpClientFactory, 
             IOptions<AppSettings> options)
         {

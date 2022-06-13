@@ -15,10 +15,13 @@ if (
 }
 else
 {
-    // Testing
-    var ss = host.Services.GetService<IDatacomService>();
-    var ds = await ss.GetCompanies();
-    var sdfss = await ss.GetPayruns(null);
+    // TODO : Read inputs
+    var companyCode = "TESTAPI";
+    var startDate = DateTime.Parse("2019-08-05");
+    var endDate = DateTime.Parse("2019-09-15");
+
+    var timesheetProcessor = host.Services.GetService<ITimesheetProcessor>();
+    await timesheetProcessor.Process(companyCode, startDate, endDate);
     Console.ReadKey();
 }
 
@@ -27,19 +30,19 @@ else
 static IHostBuilder CreateHostBuilder(string[] args)
 {
     var hostBuilder = Host.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration((context, builder) =>
-            {
-                builder.SetBasePath(Directory.GetCurrentDirectory());
-                builder.AddJsonFile("appsettings.json", optional: false);
-            })
-            .ConfigureServices((context, services) =>
-            {
-                var configuration = context.Configuration;
-                services.Configure<AppSettings>(configuration);
+        .ConfigureAppConfiguration((context, builder) =>
+        {
+            builder.SetBasePath(Directory.GetCurrentDirectory());
+            builder.AddJsonFile("appsettings.json", optional: false);
+        })
+        .ConfigureServices((context, services) =>
+        {
+            var configuration = context.Configuration;
+            services.Configure<AppSettings>(configuration);
 
-                // applications services
-                services.AddCustomServices(configuration);
-            });
-
+            // applications services
+            services.AddCustomServices(configuration);
+        });
+    
     return hostBuilder;
 }

@@ -7,17 +7,20 @@ namespace ConsoleApp.Extensions
         {
             var settings = configuration.Get<AppSettings>();
 
+            // services
+            services.AddTransient<ITimesheetProcessor, CsvTimesheetProcessor>();
+
             //register delegating handlers
-            services.AddTransient<DatacomAuthorizationDelegatingHandler>();
+            services.AddTransient<DatacomAuthDelegatingHandler>();
 
             // policy
             var policy = Policy
-                .HandleResult<HttpResponseMessage>(r => r.StatusCode == HttpStatusCode.NotFound)
+                .HandleResult<HttpResponseMessage>(r => r.StatusCode == HttpStatusCode.Unauthorized)
                 .RetryAsync();
 
             services.AddRestEaseClient<IDatacomService>(settings.API.BaseUrl)
                 .SetHandlerLifetime(TimeSpan.FromMinutes(3))
-                .AddHttpMessageHandler<DatacomAuthorizationDelegatingHandler>()
+                .AddHttpMessageHandler<DatacomAuthDelegatingHandler>()
                 //.AddPolicyHandler(policy)
                 .AddTransientHttpErrorPolicy(builder => builder.WaitAndRetryAsync(new[]
                 {
