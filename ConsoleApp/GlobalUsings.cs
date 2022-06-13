@@ -16,3 +16,4 @@ global using Microsoft.Extensions.Options;
 
 global using RestEase.HttpClientFactory;
 global using Polly;
+global using Polly.Extensions.Http;

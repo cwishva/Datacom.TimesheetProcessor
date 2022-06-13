@@ -14,19 +14,20 @@ namespace ConsoleApp.Extensions
             services.AddTransient<DatacomAuthDelegatingHandler>();
 
             // policy
-            var policy = Policy
+            var unauthorizedPolicy = Policy
                 .HandleResult<HttpResponseMessage>(r => r.StatusCode == HttpStatusCode.Unauthorized)
                 .RetryAsync();
+
+            var retryPolicy = HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .OrResult(msg => msg.StatusCode == HttpStatusCode.NotFound)
+                .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
 
             services.AddRestEaseClient<IDatacomService>(settings.API.BaseUrl)
                 .SetHandlerLifetime(TimeSpan.FromMinutes(3))
                 .AddHttpMessageHandler<DatacomAuthDelegatingHandler>()
-                //.AddPolicyHandler(policy)
-                .AddTransientHttpErrorPolicy(builder => builder.WaitAndRetryAsync(new[]
-                {
-                    TimeSpan.FromSeconds(1),
-                    TimeSpan.FromSeconds(5)
-                }));
+                .AddPolicyHandler(unauthorizedPolicy)
+                .AddPolicyHandler(retryPolicy);
 
             return services;
         }
