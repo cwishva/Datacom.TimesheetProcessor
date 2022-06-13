@@ -3,6 +3,8 @@ global using Domain.Common;
 global using Domain.Exceptions;
 global using Infrastructure.Filters;
 global using Infrastructure.Services;
+global using Infrastructure.Services.DTo;
+global using Infrastructure.Handler;
 
 global using System.Net;
 

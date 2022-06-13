@@ -15,7 +15,10 @@ if (
 }
 else
 {
-
+    // Testing
+    var ss = host.Services.GetService<IDatacomService>();
+    var ds = await ss.GetCompanies();
+    var sdfss = await ss.GetPayruns(null);
     Console.ReadKey();
 }
 
