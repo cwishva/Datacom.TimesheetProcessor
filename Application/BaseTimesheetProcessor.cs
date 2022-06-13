@@ -62,7 +62,7 @@ namespace Application
             return timesheets;
         }
 
-        protected virtual void ReportData(List<TimeSheetModel> timeSheetModels)
+        protected virtual bool ReportData(List<TimeSheetModel> timeSheetModels)
         {
             // Data
             var all = timeSheetModels
@@ -75,12 +75,18 @@ namespace Application
                    Sum = x.Sum(y => y.Sum) 
                 })
                 .ToList();
+            if (all.Count == 0)
+            {
+                return false;
+            }
 
             // Report Data
             foreach (var item in all)
             {
                 Console.WriteLine(item);
             }
+
+            return true;
         }
     }
 }

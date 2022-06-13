@@ -10,7 +10,7 @@ namespace Application.Models
     {
         public int PayRunId { get; init; }
         public string EmployeeId { get; init; }
-        public DateTime StartTime { get; init; }
+        public string StartTime { get; init; }
         public decimal Sum { get; init; }
     }
 }

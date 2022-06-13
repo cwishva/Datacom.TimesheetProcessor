@@ -10,7 +10,7 @@ namespace Application
         {
         }
 
-        public async Task Process(string CompanyCode, DateTime start, DateTime end)
+        public async Task<bool> Process(string CompanyCode, DateTime start, DateTime end)
         {
             // get companies and payruns
             var companyTask = base.GetCompany(CompanyCode);
@@ -40,17 +40,17 @@ namespace Application
                     {
                         PayRunId = item.Id,
                         EmployeeId = x.EmployeeId,
-                        StartTime = item.PayPeriod.StartDate,
+                        StartTime = item.PayPeriod.StartDate.ToString("yyyy-MM-dd"),
                         Sum = x.Value
                     }).ToList();
                 timeSheetModels.AddRange(models);
             }
 
             // Generate CSV
-            this.ReportData(timeSheetModels);
+            return this.ReportData(timeSheetModels);
         }
 
-        protected override void ReportData(List<TimeSheetModel> timeSheetModels)
+        protected override bool ReportData(List<TimeSheetModel> timeSheetModels)
         {
             // CSV Data
             var all = timeSheetModels
@@ -63,14 +63,22 @@ namespace Application
                    Sum = x.Sum(y => y.Sum) 
                 })
                 .ToList();
+            if (all.Count == 0)
+            {
+                return false;
+            }
 
             // Generate CSV
             var fileName = $"TimesheetImport_{DateTime.UtcNow:yyyyMMdd}.csv";
+            var path = $"{ Directory.GetCurrentDirectory()}\\{fileName}";
             using (var writer = new StreamWriter(fileName))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
                 csv.WriteRecords(all);
             }
+
+            Console.WriteLine($"File saved at : {path}");
+            return true;
         }
     }
 }

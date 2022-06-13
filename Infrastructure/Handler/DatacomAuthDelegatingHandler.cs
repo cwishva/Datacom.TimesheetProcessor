@@ -21,6 +21,17 @@ namespace Infrastructure.Handler
             var auth = request.Headers.Authorization;
             if (auth != null)
             {
+                var clientId = _appSettings.API.ClientId;
+                var secret = _appSettings.API.Secret;
+                var authUrl = _appSettings.API.AuthUrl;
+                if(
+                    string.IsNullOrEmpty(authUrl) || 
+                    string.IsNullOrEmpty(secret) || 
+                    string.IsNullOrEmpty(clientId))
+                {
+                    throw new TimesheetProcessorException("Invalid API Setup. Please check the App settings");
+                }
+
                 var client = _httpClientFactory.CreateClient();
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.ConnectionClose = true;
@@ -31,10 +42,10 @@ namespace Infrastructure.Handler
                     new KeyValuePair<string, string>("grant_type", "client_credentials")
                 };
                 var content = new FormUrlEncodedContent(values);
-                var authenticationString = $"{_appSettings.API.ClientId}:{_appSettings.API.Secret}";
+                var authenticationString = $"{clientId}:{secret}";
                 var base64EncodedAuthenticationString = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
 
-                var requestMessage = new HttpRequestMessage(HttpMethod.Post, _appSettings.API.AuthUrl);
+                var requestMessage = new HttpRequestMessage(HttpMethod.Post, authUrl);
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
                 requestMessage.Content = content;
 

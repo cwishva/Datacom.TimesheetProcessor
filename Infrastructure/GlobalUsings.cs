@@ -1,5 +1,6 @@
 ﻿
 global using Domain.Common;
+global using Domain.Exceptions;
 global using Application.Services.DTo;
 
 global using System.Net.Http.Headers;
