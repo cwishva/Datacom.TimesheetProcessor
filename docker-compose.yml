@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  consoleapp:
+    image: ${DOCKER_REGISTRY-}consoleapp
+    environment:
+        COMPANY: TESTAPI
+        STARTDATE: "2019-08-05"
+        ENDDATE: "2019-09-15"
+    build:
+      context: .
+      dockerfile: ConsoleApp\Dockerfile

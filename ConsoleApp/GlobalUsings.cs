@@ -8,6 +8,7 @@ global using Application.Interfaces;
 global using Application;
 
 global using System.Net;
+global using System.Globalization;
 
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;

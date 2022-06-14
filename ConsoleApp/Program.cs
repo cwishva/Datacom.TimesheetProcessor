@@ -15,26 +15,30 @@ if (
 }
 else
 {
-    Console.WriteLine("Enter Company Code: eg(TESTAPI)");
-    string companyCode = Console.ReadLine();
+    // Note : Support Docker compose Env and docker default values due to console read issues
+    Console.WriteLine("Enter Company Code: eg:(TESTAPI)");
+    var ENV_COMPANY = Environment.GetEnvironmentVariable("COMPANY");
+    var companyCode = ReadLine(string.IsNullOrEmpty(ENV_COMPANY) ? "TESTAPI" : ENV_COMPANY);
 
+    Console.WriteLine("Enter Start Date: eg:(2019-08-05)");
+    var ENV_STARTDATE = Environment.GetEnvironmentVariable("STARTDATE");
+    string startDateInput = ReadLine(string.IsNullOrEmpty(ENV_STARTDATE) ? "2019-08-05" : ENV_STARTDATE);
+    var startDate = TextExtension.ParseDate(startDateInput);
 
-    Console.WriteLine("Enter Start Date: eg(2019-08-05)");
-    string startDateInput = Console.ReadLine();
-    //var startDate = TextExtension.ParseDate(startDateInput);
-
-    Console.WriteLine("Enter End Date: eg(2019-09-15)");
-    string endDateInput = Console.ReadLine();
-    //var endDate = TextExtension.ParseDate(endDateInput);
+    Console.WriteLine("Enter End Date: eg:(2019-09-15)");
+    var ENV_ENDDATE = Environment.GetEnvironmentVariable("ENDDATE");
+    string endDateInput = ReadLine(string.IsNullOrEmpty(ENV_ENDDATE) ? "2019-09-15" : ENV_ENDDATE);
+    var endDate = TextExtension.ParseDate(endDateInput);
 
     // Test Value
-    companyCode = "TESTAPI";
-    var startDate = TextExtension.ParseDate("2019-08-05");
-    var endDate = TextExtension.ParseDate("2019-09-15");
+    //companyCode = "TESTAPI";
+    //startDate = TextExtension.ParseDate("2019-08-05");
+    //endDate = TextExtension.ParseDate("2019-09-15");
 
     var timesheetProcessor = host.Services.GetService<ITimesheetProcessor>();
-    await timesheetProcessor.Process(companyCode, startDate, endDate);
-    Console.ReadKey();
+    var status = await timesheetProcessor.Process(companyCode, startDate, endDate);
+    Console.WriteLine($"Console app status : {status}");
+    ReadLine(string.Empty);
 }
 
 
@@ -46,6 +50,7 @@ static IHostBuilder CreateHostBuilder(string[] args)
         {
             builder.SetBasePath(Directory.GetCurrentDirectory());
             builder.AddJsonFile("appsettings.json", optional: false);
+            builder.AddEnvironmentVariables();
         })
         .ConfigureServices((context, services) =>
         {
@@ -57,4 +62,16 @@ static IHostBuilder CreateHostBuilder(string[] args)
         });
     
     return hostBuilder;
+}
+
+static string ReadLine(string defaultValue)
+{
+    var input = defaultValue;
+    // Docker console conflit check
+    if (!Console.IsInputRedirected)
+    {
+        input = Console.In.ReadLine();
+    }
+    
+    return input;
 }
