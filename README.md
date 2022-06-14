@@ -54,9 +54,10 @@ Here's why:
 
 Awesome frameworks/libraries were used to bootstrap this project.
 
-* [Dotnet Core 6]([https://nextjs.org/](https://dotnet.microsoft.com/en-us/download/dotnet/6.0))
-* [RestEase](https://reactjs.org/](https://www.nuget.org/packages/RestEase/))
-* [Polly](https://vuejs.org/](https://www.nuget.org/packages/polly))
+* [Dotnet Core 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+* [RestEase](https://www.nuget.org/packages/RestEase/)
+* [Polly](https://www.nuget.org/packages/polly)
+* [Docker](https://www.docker.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -69,7 +70,7 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-Visual Studio, *Docker
+Visual Studio, Docker (Optional)
 
 ### Installation
 
@@ -81,7 +82,7 @@ Visual Studio, *Docker
 
 4. Make sure appsettings.json has valid API configurations
 
-4. Run the Console app Using Docker or VS
+4. Run the Console app Using Docker Compose (docker-compose.yml - enter user input as ENV) or Docker image (User input are default since Console InputRedirected) or VS run app directly.
    
 
 <p align="right">(<a href="#top">back to top</a>)</p>
