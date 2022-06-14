@@ -57,6 +57,7 @@ Awesome frameworks/libraries were used to bootstrap this project.
 * [Dotnet Core 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 * [RestEase](https://www.nuget.org/packages/RestEase/)
 * [Polly](https://www.nuget.org/packages/polly)
+* [xUnit](https://xunit.net/)
 * [Docker](https://www.docker.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
